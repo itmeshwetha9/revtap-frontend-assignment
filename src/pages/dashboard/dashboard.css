@@ -1,0 +1,29 @@
+.dashboard-container {
+  background: lightgrey;
+  padding: 1rem;
+}
+
+.charts-container {
+  display: flex;
+  width: calc(100%-2rem);
+  height: 50vh;
+  text-align: left;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.charts-container .chart-card {
+  width:49%;
+  background: white;
+  max-height: 100%;
+}
+
+.chart-card h3{
+    padding: 1rem;
+    margin-bottom: 0;
+    border-bottom: 1px solid lightgray;
+}
+
+.table-container{
+    background: white;
+}

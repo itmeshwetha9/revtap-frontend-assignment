@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import App from './App';
+import Dashboard from './dashboard';
 
-test('renders app component', () => {
-  const container = render(<App />);
+test('renders dashboard', () => {
+  const container = render(<Dashboard />);
   expect(container).toMatchSnapshot();
 });
