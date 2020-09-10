@@ -6,10 +6,10 @@
 .charts-container {
   display: flex;
   width: calc(100%-2rem);
-  height: 50vh;
+  height: 80vh;
   text-align: left;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: 10rem;
 }
 
 .charts-container .chart-card {
@@ -26,4 +26,25 @@
 
 .table-container{
     background: white;
+}
+
+.header{
+  position: sticky;
+    top: 0;
+    z-index: 1;
+    background: yellow;
+}
+
+.nav{
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+}
+
+a{
+  background: honeydew;
+}
+
+a.selected{
+  background: green;
 }

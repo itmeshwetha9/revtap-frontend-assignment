@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import moment from "moment";
 import { Table } from "antd";
 import { Chart } from "react-google-charts";
@@ -43,13 +43,28 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     if (customerList.response) {
       const formattedData: Array<Array<any>> = [["Date", "Orders Count"]];
-      const res = groupandOrderBy(customerList.response.customers, "created");
-      Object.entries(res).map((group: Array<any>) =>
-        formattedData.push([group[0].split("-")[0], group[1].length])
-      );
+
+      const res = groupandOrderBy(customerList.response.orders, "created");
+      enumerateDaysBetweenDates("2020-04-01", "2020-04-30").forEach((date) => {
+        formattedData.push([date, res[date]?.length || 0]);
+      });
+      // Object.entries(res).map((group: Array<any>) =>
+      //   formattedData.push([group[0].split("-")[0],
+      //   group[1].length
+      // ])
+      // );
       setGroupedCustomers(formattedData);
     }
   }, [customerList.response]);
+
+  const enumerateDaysBetweenDates = function (startDate: any, endDate: any) {
+    let date = [];
+    while (moment(startDate) <= moment(endDate)) {
+      date.push(startDate);
+      startDate = moment(startDate).add(1, "days").format("YYYY-MM-DD");
+    }
+    return date;
+  };
 
   // format orders data for the orders total price
   useEffect(() => {
@@ -71,7 +86,7 @@ const Dashboard: React.FC = () => {
     return list
       .sort((a, b) => a[key].localeCompare(b[key]))
       .reduce((r: any, a) => {
-        const date = moment.utc(a.created).format("DD-MM-YYYY");
+        const date = moment.utc(a.created).format("YYYY-MM-DD");
         r[date] = [...(r[date] || []), a];
         return r;
       }, {});
@@ -111,51 +126,90 @@ const Dashboard: React.FC = () => {
     },
   ];
 
+  const tableRef: any = useRef(null);
+  const chartRef: any = useRef(null);
+
+  const [activeCharacter, setActiveCharacter] = useState("");
+  useEffect(() => {
+    const handleIntersection = function (entries: any[]) {
+      entries.forEach((entry: { target: any; isIntersecting: any }) => {
+        if (entry.target.id !== activeCharacter && entry.isIntersecting) {
+          setActiveCharacter(entry.target.id);
+        }
+      });
+    };
+    const observer = new IntersectionObserver(handleIntersection);
+    observer.observe(tableRef.current);
+    observer.observe(chartRef.current);
+    return () => observer.disconnect(); // Clenaup the observer if
+  }, [activeCharacter, setActiveCharacter, tableRef, chartRef]);
+
+  useEffect(() => {
+    const allEls = document.getElementsByClassName('selected');
+    while (allEls.length) {
+      allEls[0].className = allEls[0].className.replace(/\ selected\b/g, "");
+    }
+    const el = document.querySelector(`a[href*='${activeCharacter}']`);
+    if (el && Object.keys(el).length) {
+      el.className = el.className + " selected";
+    }
+  }, [activeCharacter]);
+
   return (
-    <div className="dashboard-container">
-      <div className="charts-container">
-        <div className="chart-card">
-          <h3>Orders Count</h3>
-          <Chart
-            chartType="Bar"
-            data={groupedCustomers}
-            loader={<div>Loading Chart</div>}
-            width="100%"
-            height="90%"
-            options={{
-              axes: { y: { 0: { side: "left", label: "Orders Count" } } },
-              legend: { position: "none" },
-              chartArea: { right: "10%" },
-            }}
-          />
-        </div>
-        <div className="chart-card">
-          <h3>Orders Total Price</h3>
-          <Chart
-            chartType="LineChart"
-            data={groupedOrders}
-            loader={<div>Loading Chart</div>}
-            width="100%"
-            height="90%"
-            options={{
-              hAxis: {
-                title: "Date",
-              },
-              vAxis: {
-                title: "Total Price",
-              },
-              legend: { position: "none" },
-              chartArea: { left: "15%", right: "5%" },
-            }}
-          />
-        </div>
+    <div className="page-layout" id="page">
+      <div className="header" id="header">
+        <h1>Header</h1>
+        <a href="#charts">Graph</a>
+        <a href="#table">Table</a>
       </div>
-      <div className="table-container">
-        <Table
-          columns={columns}
-          rowKey={"id"}
-          dataSource={customerList.response?.customers}
-        ></Table>
+      <div className="nav">
+        Empty Container
+      </div>
+      <div className="dashboard-container" id="body">
+        <div className="charts-container" ref={chartRef} id="charts">
+          <div className="chart-card">
+            <h3>Orders Count</h3>
+            <Chart
+              chartType="Bar"
+              data={groupedCustomers}
+              loader={<div>Loading Chart</div>}
+              width="100%"
+              height="90%"
+              options={{
+                axes: { y: { 0: { side: "left", label: "Orders Count" } } },
+                legend: { position: "none" },
+                chartArea: { right: "10%" },
+              }}
+            />
+          </div>
+          <div className="chart-card">
+            <h3>Orders Total Price</h3>
+            <Chart
+              chartType="LineChart"
+              data={groupedOrders}
+              loader={<div>Loading Chart</div>}
+              width="100%"
+              height="90%"
+              options={{
+                hAxis: {
+                  title: "Date",
+                },
+                vAxis: {
+                  title: "Total Price",
+                },
+                legend: { position: "none" },
+                chartArea: { left: "15%", right: "5%" },
+              }}
+            />
+          </div>
+        </div>
+        <div className="table-container" ref={tableRef} id="table">
+          <Table
+            columns={columns}
+            rowKey={"id"}
+            dataSource={customerList.response?.customers}
+          ></Table>
+        </div>
       </div>
     </div>
   );

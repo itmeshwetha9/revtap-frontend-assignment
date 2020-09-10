@@ -177,14 +177,6 @@
 			"orders": 4
 		},
 		{
-			"id": "ebe76803-6e95-4e57-9874-2f1e039207a4",
-			"firstName": "Dario",
-			"lastName": "Reichert",
-			"email": "Destiny73@yahoo.com",
-			"created": "2020-04-18T23:41:53.800Z",
-			"orders": 0
-		},
-		{
 			"id": "fd76e583-67d1-41ff-af8f-a739bc78d1b2",
 			"firstName": "Cleveland",
 			"lastName": "Oberbrunner",
@@ -311,14 +303,6 @@
 			"email": "Betty_Anderson94@gmail.com",
 			"created": "2020-04-14T16:35:52.082Z",
 			"orders": 2
-		},
-		{
-			"id": "63a7afe2-2403-48ae-b2eb-4d3863c6a0b1",
-			"firstName": "Arjun",
-			"lastName": "Littel",
-			"email": "Angeline_Murazik89@yahoo.com",
-			"created": "2020-04-18T06:26:10.781Z",
-			"orders": 0
 		},
 		{
 			"id": "1cd3b6a4-16a2-4a31-b193-8b5e3b7a684b",
@@ -1097,13 +1081,6 @@
 			"price": "581.00"
 		},
 		{
-			"id": "5ca286eb-77f8-4552-8767-77e4040fb5ae",
-			"created": "2020-04-18T23:06:17.869Z",
-			"customer": "Bradtke",
-			"product": "Keyboard",
-			"price": "117.00"
-		},
-		{
 			"id": "48bffa80-7779-43eb-a4ef-f80a88cce69b",
 			"created": "2020-04-24T01:15:08.217Z",
 			"customer": "Shields",
@@ -1368,13 +1345,6 @@
 			"customer": "Predovic",
 			"product": "Sausages",
 			"price": "862.00"
-		},
-		{
-			"id": "f08484ef-db1f-414e-afb8-f4876ad41eaf",
-			"created": "2020-04-18T16:23:39.084Z",
-			"customer": "Kohler",
-			"product": "Shirt",
-			"price": "985.00"
 		},
 		{
 			"id": "059d70a9-98de-4444-bddc-cbc728de1a47",
